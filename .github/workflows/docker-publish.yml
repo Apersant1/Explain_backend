@@ -29,3 +29,27 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/explain-server:latest
+    
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build    
+    steps:
+      - name: Deploy to Digital Ocean droplet via SSH action
+        uses: appleboy/ssh-action@v0.1.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            # Login to registry
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} 
+            # Stop running container
+            docker stop $(echo $IMAGE_NAME)
+            # Remove old container
+            docker rm $(echo $IMAGE_NAME)
+            # Run a new container from a new image
+            docker run -d \
+            --restart always \
+            --name server \
+            --port 4444:4444 \
+            jasey/explain-server:latest
