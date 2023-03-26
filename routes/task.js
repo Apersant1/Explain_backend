@@ -5,8 +5,8 @@ import { TaskCreateValidation, ThemeCreateValidation } from "../validations/vali
 
 
 const router = Router();
-router.get('/:id',CheckSignIn,getOneTask)
-router.get('/:id/all',CheckSignIn,getAllTasksFromTheme);
+router.get('/:id',getOneTask)
+router.get('/:id/all',getAllTasksFromTheme);
 router.post('/create',CheckSignIn,TaskCreateValidation,handleValidationErrors,create)
 
 

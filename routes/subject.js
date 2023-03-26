@@ -5,8 +5,8 @@ import { SubjectCreateValidation } from "../validations/validations.js";
 
 const router = Router();
 
-router.get('/all',CheckSignIn,getAll);
-router.get('/:id',CheckSignIn,getOne);
+router.get('/all',getAll);
+router.get('/:id',getOne);
 router.post('/create',CheckSignIn,SubjectCreateValidation,create);
 router.delete('/delete/:id',CheckSignIn,remove);
 router.patch('/edit/:id',CheckSignIn,SubjectCreateValidation,edit);
